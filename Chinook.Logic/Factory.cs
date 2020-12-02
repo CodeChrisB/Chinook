@@ -1,66 +1,62 @@
-﻿using CsvMapper.Logic;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Chinook.Logic
 {
-    public class Factory
-    {
-        public static IEnumerable<Contracts.Persistence.IGenre> GetAllGenres()
-        {
-            var result = CsvHelper.Read<Models.Persistence.Genre>();
-            return result;
-        }
-        public static IEnumerable<Contracts.Persistence.IAlbum> GetAllAlbums()
-        {
-            var result = CsvHelper.Read<Models.Persistence.Album>();
-            return result;
-        }
-        public static IEnumerable<Contracts.Persistence.IArtist> GetAllArtists()
-        {
-            var result = CsvHelper.Read<Models.Persistence.Artist>();
-            return result;
-        }
-        public static IEnumerable<Contracts.Persistence.ICustomer> GetAllCustomer()
-        {
-            var result = CsvHelper.Read<Models.Persistence.Customer>();
-            return result;
-        }
-        public static IEnumerable<Contracts.Persistence.IEmployee> GetAllEmployees()
-        {
-            var result = CsvHelper.Read<Models.Persistence.Employee>();
-            return result;
-        }
-        public static IEnumerable<Contracts.Persistence.IInvoice> GetAllInvoices()
-        {
-            var result = CsvHelper.Read<Models.Persistence.Invoice>();
-            return result;
-        }
-        public static IEnumerable<Contracts.Persistence.IInvoiceLine> GetAllInvoiceLines()
-        {
-            var result = CsvHelper.Read<Models.Persistence.InvoiceLine>();
-            return result;
-        }
-        public static IEnumerable<Contracts.Persistence.IMediaType> GetAllMediaTypes()
-        {
-            var result = CsvHelper.Read<Models.Persistence.MediaType>();
-            return result;
-        }
-        public static IEnumerable<Contracts.Persistence.IPlaylist> GetAllPlaylists()
-        {
-            var result = CsvHelper.Read<Models.Persistence.Playlist>();
-            return result;
-        }
-        public static IEnumerable<Contracts.Persistence.IPlaylistTrack> GetAllPlaylistTracks()
-        {
-            var result = CsvHelper.Read<Models.Persistence.PlaylistTrack>();
-            return result;
-        }
-        public static IEnumerable<Contracts.Persistence.ITrack> GetAllTracks()
-        {
-            var result = CsvHelper.Read<Models.Persistence.Track>();
-            return result;
-        }
-    }
+	public class Factory
+	{
+		public static IEnumerable<Contracts.Persistence.IAlbum> GetAllAlbums()
+		{
+			return CsvMapper.Logic.CsvHelper.Read<Models.Persistence.Album>();
+		}
+
+		public static IEnumerable<Contracts.Persistence.IArtist> GetAllArtists()
+		{
+			return CsvMapper.Logic.CsvHelper.Read<Models.Persistence.Artist>();
+		}
+
+		public static IEnumerable<Contracts.Persistence.ICustomer> GetAllCustomers()
+		{
+			return CsvMapper.Logic.CsvHelper.Read<Models.Persistence.Customer>();
+		}
+
+		public static IEnumerable<Contracts.Persistence.IEmployee> GetAllEmployees()
+		{
+			return CsvMapper.Logic.CsvHelper.Read<Models.Persistence.Employee>();
+		}
+
+		public static IEnumerable<Contracts.Persistence.IGenre> GetAllGenres()
+		{
+			return CsvMapper.Logic.CsvHelper.Read<Models.Persistence.Genre>();
+		}
+
+		public static IEnumerable<Contracts.Persistence.IInvoice> GetAllInvoices()
+		{
+			return CsvMapper.Logic.CsvHelper.Read<Models.Persistence.Invoice>();
+		}
+
+		public static IEnumerable<Contracts.Persistence.IInvoiceLine> GetAllInvoiceLines()
+		{
+			return CsvMapper.Logic.CsvHelper.Read<Models.Persistence.InvoiceLine>();
+		}
+
+		public static IEnumerable<Contracts.Persistence.IMediaType> GetAllMediaTypes()
+		{
+			return CsvMapper.Logic.CsvHelper.Read<Models.Persistence.MediaType>();
+		}
+
+		public static IEnumerable<Contracts.Persistence.IPlaylist> GetAllPlaylists()
+		{
+			return CsvMapper.Logic.CsvHelper.Read<Models.Persistence.Playlist>();
+		}
+
+		public static IEnumerable<Contracts.Persistence.IPlaylistTrack> GetAllPlaylistTracks()
+		{
+			return CsvMapper.Logic.CsvHelper.Read<Models.Persistence.PlaylistTrack>();
+		}
+
+		public static IEnumerable<Contracts.Persistence.ITrack> GetAllTracks()
+		{
+			return CsvMapper.Logic.CsvHelper.Read<Models.Persistence.Track>();
+		}
+	}
 }

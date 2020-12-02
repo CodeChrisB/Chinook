@@ -1,13 +1,10 @@
 ﻿
-using Chinook.Contracts.Persistence;
-using CsvMapper.Logic.Attributes;
-
 namespace Chinook.Logic.Models.Persistence
 {
-    [EntityInfo(FileName = "Genre.csv", Seperator = ';', HasHeader = true)]
-    internal class Genre : IdentityObject, IGenre
-    {
-        [PropertyInfo(OrderPosition = 1)]
-        public string Name { get; set; }
-    }
+	[CsvMapper.Logic.Attributes.DataClass(HasHeader = true, FileName = "CsvData/Genre.csv")]
+	internal class Genre : IdentityObject, Contracts.Persistence.IGenre
+	{
+		[CsvMapper.Logic.Attributes.DataPropertyInfo(OrderPosition = 1)]
+		public string Name { get; set; }
+	}
 }

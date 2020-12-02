@@ -1,22 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Chinook.Contracts.Persistence
+﻿namespace Chinook.Contracts.Persistence
 {
-    public interface ICustomer:IIdentifiable
+    public interface ICustomer : IIdentifiable
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Company { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string Country { get; set; }
-        public string Postalcode { get; set; }
-        public string Phone { get; set; }
-        public string Fax { get; set; }
-        public string Email { get; set; }
-        public int SupportRepId { get; set; }
+        string FirstName { get; set; }
+
+        string LastName { get; set; }
+
+        string Company { get; set; }
+
+        string Address { get; set; }
+
+        string City { get; set; }
+
+        string State { get; set; }
+
+        string Country { get; set; }
+
+        string PostalCode { get; set; }
+
+        string Phone { get; set; }
+
+        string Fax { get; set; }
+
+        string Email { get; set; }
+
+        int SupportRepId { get; set; }
     }
 }

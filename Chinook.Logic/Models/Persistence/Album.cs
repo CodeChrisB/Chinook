@@ -1,15 +1,14 @@
-﻿
-using Chinook.Contracts.Persistence;
-using CsvMapper.Logic.Attributes;
+﻿using CsvMapper.Logic.Attributes;
 
 namespace Chinook.Logic.Models.Persistence
 {
-    [EntityInfo(FileName = "Album.csv", Seperator = ';', HasHeader = true)]
-    internal class Album : IdentityObject, IAlbum
-    {
-        [PropertyInfo(OrderPosition = 1)]
-        public string Title { get; set; }
-        [PropertyInfo(OrderPosition = 2)]
-        public int ArtistId { get; set; }
-    }
+	[DataClass(HasHeader = true, FileName = "CsvData/Album.csv")]
+	internal class Album : IdentityObject, Contracts.Persistence.IAlbum
+	{
+		[DataPropertyInfo(OrderPosition = 1)]
+		public string Title { get; set; }
+
+		[DataPropertyInfo(OrderPosition = 2)]
+		public int ArtistId { get; set; }
+	}
 }

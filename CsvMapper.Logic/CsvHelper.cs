@@ -1,144 +1,157 @@
-﻿using CsvMapper.Logic.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.IO;
+using CsvMapper.Logic.Attributes;
+using System.Text.RegularExpressions;
 
 namespace CsvMapper.Logic
 {
-    public class CsvHelper
-    {
-        private static string NullLabel => "<NULL>";
-        public static void Write<T>(IEnumerable<T> models)
-        {
-            if (models == null)
-                throw new ArgumentException();
+	public class CsvHelper
+	{
+		private static string NullLabel => "<NULL>";
 
-            var first = models.FirstOrDefault();
-            var lines = new List<string>();
+		public static void Write(IEnumerable<object> models)
+		{
+			if (models == null)
+				throw new ArgumentNullException(nameof(models));
 
-            if (first != null)
-            {
-                var metaData = GetModelData<T>(first);
-                if(metaData.IsDataClass)
-                {
-                    foreach (var item in models)
-                    {
-                        
-                        var line = CreateCsvLine(item, metaData.Seperator);
+			var first = models.FirstOrDefault();
+			var lines = new List<string>();
 
-                        lines.Add(line);
-                    }
-                    File.WriteAllLines(metaData.FileName, lines, Encoding.Default);
-                }
-            }
-        }
+			if (first != null)
+			{
+				var metaData = GetModelData(first);
 
-        private static string CreateCsvLine<T>(T model, char seperator)
-        {
-            if (model == null)
-                throw new ArgumentNullException();
+				if (metaData.IsDataClass)
+				{
+					foreach (var item in models)
+					{
+						var line = CreateCsvLine(item, metaData.Separator);
+						lines.Add(line);
+					}
 
-            var result  = new StringBuilder();
+					File.WriteAllLines(metaData.FileName, lines, Encoding.Default);
+				}
+			}
+		}
 
-            var type = model.GetType();
-            var attributes = new List<PropertyInfoAttribute>();
+		public static IEnumerable<T> Read<T>() where T : new()
+		{
+			var result = new List<T>();
+			var metaData = GetModelData<T>();
 
-            var exportProps = type.GetProperties()
-                .Where(p => p.GetCustomAttribute<PropertyInfoAttribute>() != null)
-                .OrderBy(e => e.GetCustomAttribute<PropertyInfoAttribute>().OrderPosition);
+			if (metaData.IsDataClass)
+			{
+				var lines = File.ReadAllLines(metaData.FileName, Encoding.Default)
+								.Skip(metaData.HasHeader ? 1 : 0);
 
-            foreach (var item in exportProps)
-            {
-                if (item.GetCustomAttribute<PropertyInfoAttribute>().NotMapped == false)
-                {
-                    var value = item.GetValue(model);
-                    if (result.Length > 0)
-                        result.Append(seperator);
+				foreach (var line in lines)
+					result.Add(ReadCsvLine<T>(line, metaData.Separator));
+			}
 
-                    if (value != null)
-                        result.Append(value.ToString());
-                    else
-                        result.Append(NullLabel);
-                }
-            }
+			return result;
+		}
 
-            return result.ToString();
-        }
+		private static T ReadCsvLine<T>(string line, string separator)
+			where T : new()
+		{
+			if (line == null)
+				throw new ArgumentNullException(nameof(line));
 
-        public static IEnumerable<T> Read<T>()where T : new()
-        {
-            T example = new T();
-            var metaData = GetModelData<T>(example);
-            var result = new List<T>();
+			var result = new T();
+			var type = typeof(T);
 
-            var type = typeof(T);
+			// regex matches all ; outside of "
+			Regex reg = new Regex(";(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+			var data = reg.Split(line);
+			//var data = line.Split(new [] { separator }, StringSplitOptions.None);
 
-            var exportProps = type.GetProperties()
-                .Where(p => p.GetCustomAttribute<PropertyInfoAttribute>() != null)
-                .OrderBy(e => e.GetCustomAttribute<PropertyInfoAttribute>().OrderPosition);
+			var impProps = type.GetProperties()
+							   .Where(p =>
+							   {
+								   var a = p.GetCustomAttribute<DataPropertyInfoAttribute>();
 
-            var lines = File.ReadAllLines("./Source/"+metaData.FileName, Encoding.Default);
-            if (metaData.HasHeader)
-            {
-                lines = lines.Skip(1).ToArray();
-            }
-            foreach (string line in lines)
-            {
-                var information = RemoveNestedSeperators(line,metaData.Seperator).Split(metaData.Seperator);
-                var entity = new T();
+								   return a != null && a.NotMapped == false && p.CanWrite;
+							   })
+								.OrderBy(e => e.GetCustomAttribute<DataPropertyInfoAttribute>().OrderPosition);
 
-                foreach (var item in exportProps)
-                {
+			for (int i = 0; i < data.Length; i++)
+			{
+				var value = data[i];
+				var item = impProps.SingleOrDefault(e => 
+				{
+					var a = e.GetCustomAttribute<DataPropertyInfoAttribute>();
 
-                    var info = item.GetCustomAttribute<PropertyInfoAttribute>();
-                    if (info.NotMapped==false)
-                    {
-                        entity.GetType().GetProperty(item.Name.ToString()).SetValue(entity, Convert.ChangeType(information[info.OrderPosition], item.PropertyType));
-                    }
-                }
-                result.Add(entity);
-            }
-            
-            return result;
-        }
+					return a.OrderPosition == i;
+				});
 
-        private static (bool IsDataClass,string FileName,char Seperator, bool HasHeader) GetModelData<T>(T model)
-        {
-            if (model == null)
-                throw new ArgumentNullException();
+				if (item != null)
+				{
+					if (value == NullLabel)
+						item.SetValue(result, null);
+					else
+						item.SetValue(result, Convert.ChangeType(value, item.PropertyType));
+				}
+			}
 
-            var type = model.GetType();
-            var dca = type.GetCustomAttribute<EntityInfoAttribute>();
+			return result;
+		}
 
-            if (dca != null)
-                return (true, dca.FileName, dca.Seperator, dca.HasHeader);
+		private static (bool IsDataClass, bool HasHeader, string FileName, string Separator) GetModelData<T>()
+		{
+			var type = typeof(T);
+			var dca = type.GetCustomAttribute<DataClassAttribute>();
 
-            return (false, null, default(char), false);
-        }
+			if (dca != null)
+				return (true, dca.HasHeader, dca.FileName, dca.Separator);
 
-        private static string RemoveNestedSeperators(string line, char seperator)
-        {
-            var res = "";
-            bool inside = false;
-            char other = seperator == ';' ? ',' : ';';
+			return (false, false, null, null);
+		}
+		private static (bool IsDataClass, string FileName, string Separator) GetModelData(object model)
+		{
+			if (model == null)
+				throw new ArgumentNullException(nameof(model));
 
-            for (int i = 0; i < line.Length; i++)
-            {
-                char curr = line[i];
-                if (line[i] == '"')
-                    inside = !inside;
-                if (inside && curr == seperator)
-                    curr = other;
+			var type = model.GetType();
+			var dca = type.GetCustomAttribute<DataClassAttribute>();
 
+			if (dca != null)
+				return (true, dca.FileName, dca.Separator);
 
-                if (curr != '"')
-                    res += curr;
-            }
-            return res;
-        }
-    }
+			return (false, null, null);
+		}
+		private static string CreateCsvLine(object model, string separator)
+		{
+			if (model == null)
+				throw new ArgumentNullException(nameof(model));
+
+			var result = new StringBuilder();
+			var type = model.GetType();
+			var expProps = type.GetProperties()
+							   .Where(p =>
+								{
+									var a = p.GetCustomAttribute<DataPropertyInfoAttribute>();
+
+									return a != null && a.NotMapped == false && p.CanRead;
+								})
+								.OrderBy(e => e.GetCustomAttribute<DataPropertyInfoAttribute>().OrderPosition);
+
+			foreach (var item in expProps)
+			{
+				var value = item.GetValue(model);
+
+				if (result.Length > 0)
+					result.Append(separator);
+
+				if (value != null)
+					result.Append(value.ToString());
+				else
+					result.Append(NullLabel);
+			}
+			return result.ToString();
+		}
+	}
 }

@@ -1,18 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Chinook.Contracts.Persistence
+﻿namespace Chinook.Contracts.Persistence
 {
-    public interface ITrack:IIdentifiable
+    public interface ITrack : IIdentifiable
     {
-        public string Name { get; set; }
-        public int AlbumId { get; set; }
-        public int MediaTypeId { get; set; }
-        public int GenreId { get; set; }
-        public string Composer { get; set; }
-        public int Milliseconds { get; set; }
-        public int Bytes { get; set; }
-        public double UnitPrice { get; set; }
+        string Name { get; set; }
+
+        int AlbumId { get; set; }
+
+        int MediaTypeId { get; set; }
+
+        int GenreId { get; set; }
+
+        string Composer { get; set; }
+
+        int Miliseconds { get; set; }
+
+        int Bytes { get; set; }
+
+        decimal UnitPrice { get; set; }
     }
 }

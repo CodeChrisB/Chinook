@@ -1,28 +1,33 @@
-﻿
-using Chinook.Contracts.Persistence;
+﻿using System;
 using CsvMapper.Logic.Attributes;
 
 namespace Chinook.Logic.Models.Persistence
 {
-    [EntityInfo(FileName = "Invoice.csv", Seperator = ';', HasHeader = true)]
-    internal class Invoice : IdentityObject, IInvoice
+    [DataClass(HasHeader = true, FileName = "CsvData/Invoice.csv")]
+    internal class Invoice : IdentityObject, Contracts.Persistence.IInvoice
     {
-        // InvoiceId;CustomerId;InvoiceDate;BillingAddress;BillingCity;BillingState;BillingCountry;BillingPostalCode;Total
-        [PropertyInfo(OrderPosition = 1)]
-        public int Customerid { get; set; }
-        [PropertyInfo(OrderPosition = 2)]
-        public string InvoiceDate { get; set; }
-        [PropertyInfo(OrderPosition = 3)]
+        [DataPropertyInfo(OrderPosition = 1)]
+        public int CustomerId { get; set; }
+
+        [DataPropertyInfo(OrderPosition = 2)]
+        public DateTime InvoiceDate { get; set; }
+
+        [DataPropertyInfo(OrderPosition = 3)]
         public string BillingAddress { get; set; }
-        [PropertyInfo(OrderPosition = 4)]
+
+        [DataPropertyInfo(OrderPosition = 4)]
         public string BillingCity { get; set; }
-        [PropertyInfo(OrderPosition = 5)]
+
+        [DataPropertyInfo(OrderPosition = 5)]
         public string BillingState { get; set; }
-        [PropertyInfo(OrderPosition = 6)]
+
+        [DataPropertyInfo(OrderPosition = 6)]
         public string BillingCountry { get; set; }
-        [PropertyInfo(OrderPosition = 7)]
+
+        [DataPropertyInfo(OrderPosition = 7)]
         public string BillingPostalCode { get; set; }
-        [PropertyInfo(OrderPosition = 8)]
-        public double Total { get; set; }
+
+        [DataPropertyInfo(OrderPosition = 8)]
+        public Decimal Total { get; set; }
     }
 }

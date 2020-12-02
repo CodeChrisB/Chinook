@@ -1,23 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Chinook.Contracts.Persistence
 {
-    public interface IEmployee:IIdentifiable
+    public interface IEmployee : IIdentifiable
     {
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
-        public string Title { get; set; }
-        public string ReportsTo { get; set; }
-        public string BirthDate { get; set; }
-        public string HireDate { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string PostalCode { get; set; }
-        public string Phone { get; set; }
-        public string Fax { get; set; }
-        public string Email { get; set; }
+        string LastName { get; set; }
+
+        string FirstName { get; set; }
+
+        string Title { get; set; }
+
+        int ReportsTo { get; set; }
+
+        DateTime BirthDate { get; set; }
+
+        DateTime HireDate { get; set; }
+
+        string Address { get; set; }
+
+        string City { get; set; }
+
+        string State { get; set; }
+
+        string Country { get; set; }
+
+        string PostalCode { get; set; }
+
+        string Phone { get; set; }
+
+        string Fax { get; set; }
+
+        string Email { get; set; }
     }
 }

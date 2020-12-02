@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace Chinook.Contracts.Persistence
 {
-    public interface IArtist:IIdentifiable
-    {
-        public string Name { get; set; }
-    }
+	public interface IArtist : IIdentifiable
+	{
+		string Name { get; set; }
+	}
 }

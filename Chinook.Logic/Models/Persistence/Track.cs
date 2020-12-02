@@ -1,34 +1,32 @@
-﻿using Chinook.Contracts.Persistence;
-using CsvMapper.Logic.Attributes;
-using System;
+﻿using CsvMapper.Logic.Attributes;
 
 namespace Chinook.Logic.Models.Persistence
 {
-    [EntityInfo(FileName = "Track.csv", Seperator = ';', HasHeader = true)]
-    internal class Track : IdentityObject, ITrack
+    [DataClass(HasHeader = true, FileName = "CsvData/Track.csv")]
+    internal class Track : IdentityObject, Contracts.Persistence.ITrack
     {
-        // TrackId;Name;AlbumId;MediaTypeId;GenreId;Composer;Milliseconds;Bytes;UnitPrice
-
-        [PropertyInfo(OrderPosition = 1)]
+        [DataPropertyInfo(OrderPosition = 1)]
         public string Name { get; set; }
-        [PropertyInfo(OrderPosition = 2)]
-        public int AlbumId { get; set; }
-        [PropertyInfo(OrderPosition = 3)]
-        public int MediaTypeId { get; set; }
-        [PropertyInfo(OrderPosition = 4)]
-        public int GenreId { get; set; }
-        [PropertyInfo(OrderPosition = 5)]
-        public string Composer { get; set; }
-        [PropertyInfo(OrderPosition = 6)]
-        public int Milliseconds { get; set; }
-        [PropertyInfo(OrderPosition = 7)]
-        public int Bytes { get; set; }
-        [PropertyInfo(OrderPosition = 8)]
-        public double UnitPrice { get; set; }
 
-        public int CompareTo(object obj)
-        {
-            return Milliseconds.CompareTo(((Track) obj).Milliseconds);
-        }
+        [DataPropertyInfo(OrderPosition = 2)]
+        public int AlbumId { get; set; }
+
+        [DataPropertyInfo(OrderPosition = 3)]
+        public int MediaTypeId { get; set; }
+
+        [DataPropertyInfo(OrderPosition = 4)]
+        public int GenreId { get; set; }
+
+        [DataPropertyInfo(OrderPosition = 5)]
+        public string Composer { get; set; }
+
+        [DataPropertyInfo(OrderPosition = 6)]
+        public int Miliseconds { get; set; }
+
+        [DataPropertyInfo(OrderPosition = 7)]
+        public int Bytes { get; set; }
+
+        [DataPropertyInfo(OrderPosition = 8)]
+        public decimal UnitPrice { get; set; }
     }
 }

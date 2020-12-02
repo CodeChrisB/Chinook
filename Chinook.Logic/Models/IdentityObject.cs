@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CsvMapper.Logic.Attributes;
 
 namespace Chinook.Logic.Models
 {
-    internal abstract class IdentityObject:Contracts.IIdentifiable
-    {
-        [CsvMapper.Logic.Attributes.PropertyInfo(OrderPosition=0)]
-        public int Id { get; set; }
-    }
+	internal abstract class IdentityObject : Contracts.IIdentifiable
+	{
+		[DataPropertyInfo(OrderPosition = 0)]
+		public int Id { get; set; }
+	}
 }

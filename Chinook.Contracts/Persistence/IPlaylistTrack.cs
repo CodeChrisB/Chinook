@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Chinook.Contracts.Persistence
+﻿namespace Chinook.Contracts.Persistence
 {
-    public interface IPlaylistTrack:IIdentifiable
+    public interface IPlaylistTrack
     {
-        public int PlaylistId { get; set; }
+        int PlaylistId { get; }
+
+        int TrackId { get; }
     }
 }

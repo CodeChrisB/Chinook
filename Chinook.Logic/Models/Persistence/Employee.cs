@@ -1,39 +1,51 @@
-﻿using Chinook.Contracts.Persistence;
+﻿using System;
 using CsvMapper.Logic.Attributes;
 
 namespace Chinook.Logic.Models.Persistence
 {
-    [EntityInfo(FileName = "Employee.csv", Seperator = ';', HasHeader = true)]
-    internal class Employee : IdentityObject, IEmployee
+    [DataClass(HasHeader = true, FileName = "CsvData/Employee.csv")]
+    internal class Employee : IdentityObject, Contracts.Persistence.IEmployee
     {
-
-        // EmployeeId;LastName;FirstName;Title;ReportsTo;BirthDate;HireDate;Address;City;State;Country;PostalCode;Phone;Fax;Email
-
-        [PropertyInfo(OrderPosition = 1)]
+        [DataPropertyInfo(OrderPosition = 1)]
         public string LastName { get; set; }
-        [PropertyInfo(OrderPosition = 2)]
+
+        [DataPropertyInfo(OrderPosition = 2)]
         public string FirstName { get; set; }
-        [PropertyInfo(OrderPosition = 3)]
+
+        [DataPropertyInfo(OrderPosition = 3)]
         public string Title { get; set; }
-        [PropertyInfo(OrderPosition = 4)]
-        public string ReportsTo { get; set; }
-        [PropertyInfo(OrderPosition = 5)]
-        public string BirthDate { get; set; }
-        [PropertyInfo(OrderPosition = 6)]
-        public string HireDate { get; set; }
-        [PropertyInfo(OrderPosition = 7)]
+
+        [DataPropertyInfo(OrderPosition = 4)]
+        public int ReportsTo { get; set; }
+
+        [DataPropertyInfo(OrderPosition = 5)]
+        public DateTime BirthDate { get; set; }
+
+        [DataPropertyInfo(OrderPosition = 6)]
+        public DateTime HireDate { get; set; }
+
+        [DataPropertyInfo(OrderPosition = 7)]
         public string Address { get; set; }
-        [PropertyInfo(OrderPosition = 8)]
+
+        [DataPropertyInfo(OrderPosition = 8)]
         public string City { get; set; }
-        [PropertyInfo(OrderPosition = 9)]
+
+        [DataPropertyInfo(OrderPosition = 9)]
         public string State { get; set; }
-        [PropertyInfo(OrderPosition = 10)]
+
+        [DataPropertyInfo(OrderPosition = 10)]
+        public string Country { get; set; }
+
+        [DataPropertyInfo(OrderPosition = 11)]
         public string PostalCode { get; set; }
-        [PropertyInfo(OrderPosition = 11)]
+
+        [DataPropertyInfo(OrderPosition = 12)]
         public string Phone { get; set; }
-        [PropertyInfo(OrderPosition = 12)]
+
+        [DataPropertyInfo(OrderPosition = 13)]
         public string Fax { get; set; }
-        [PropertyInfo(OrderPosition = 13)]
+
+        [DataPropertyInfo(OrderPosition = 14)]
         public string Email { get; set; }
     }
 }

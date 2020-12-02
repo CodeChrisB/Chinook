@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Chinook.Contracts.Persistence
+﻿namespace Chinook.Contracts.Persistence
 {
-    public interface IInvoiceLine:IIdentifiable
+    public interface IInvoiceLine : IIdentifiable
     {
-        public int InvoiceId { get; set; }
-        public int TrackId { get; set; }
-        public double UnitPrice { get; set; }
-        public int Quantity { get; set; }
+        int InvoiceId { get; set; }
+
+        int TrackId { get; set; }
+
+        decimal UnitPrice { get; set; }
+
+        int Quantity { get; set; }
     }
 }
